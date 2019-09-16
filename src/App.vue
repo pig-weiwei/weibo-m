@@ -2,17 +2,20 @@
   <div id="app">
     <div class="main-wrap">
       <Header></Header>
+      <Mainbody></Mainbody>
     </div>
   </div>
 </template>
 
 <script>
 import Header from './components/Header'
+import Mainbody from './components/Mainbody'
 
 export default {
   name: 'app',
   components: {
-      Header
+      Header,
+      Mainbody
   }
 }
 </script>
