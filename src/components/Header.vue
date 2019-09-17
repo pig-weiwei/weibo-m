@@ -39,13 +39,15 @@
 </template>
 
 <script>
+    import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
+
     export default {
         name: "Header",
         data() {
             return {
                 active: '',
                 activeNames: [],
-                trueValue:0,
+                trueValue: 0,
                 listData: [
                     {title: '热门', containerId: '102803', since_id: 0},
                     {title: '新鲜事', containerId: '102803_ctg1_7978_-_ctg1_7978', since_id: 0},
@@ -63,16 +65,35 @@
             }
         },
         methods: {
+            ...mapMutations(['SET_LOADING']),
+            ...mapActions(['get_main_data']),
             test(name, title) {
                 console.log(this.listData[name].containerId);
                 this.trueValue = name;
+                this.get_main_data({
+                    containerId: this.listData[name].containerId,
+                    since_id: this.listData[name].since_id
+                });
+                this.SET_LOADING(true)
             },
-            test1(v){
+            test1(v) {
                 this.active = v;
                 this.trueValue = v;
-                this.activeNames =[];
+                this.activeNames = [];
+                this.get_main_data({
+                    containerId: this.listData[v].containerId,
+                    since_id: this.listData[v].since_id
+                })
+                this.SET_LOADING(true)
             }
+        },
+        created(){
+            this.get_main_data({
+                containerId: 102803,
+                since_id: 0
+            })
         }
+
     }
 </script>
 
@@ -258,7 +279,7 @@
         margin-top: .5rem;
     }
 
-    .show-one:nth-of-type(4n+1){
+    .show-one:nth-of-type(4n+1) {
         margin-left: -.25rem;
     }
 
@@ -275,7 +296,8 @@
         background-color: #eee;
         border-radius: 3px;
     }
-    .active{
+
+    .active {
         color: #ff8200;
     }
 </style>
