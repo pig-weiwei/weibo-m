@@ -18,7 +18,7 @@
         </div>
         <div class="nav-main">
             <div class="m-box">
-                <van-tabs v-model="active" swipeable line-width="15px" line-height="2px" background="#fafafa"
+                <van-tabs v-model="getActive" swipeable line-width="15px" line-height="2px" background="#fafafa"
                           title-inactive-color="#a5adb5" title-active-color="#000" @click="test">
                     <van-tab v-for="(content,index) in listData" :title="content.title" :key="index">
 
@@ -45,27 +45,25 @@
         name: "Header",
         data() {
             return {
-                active: '',
                 activeNames: [],
                 trueValue: 0,
-                listData: [
-                    {title: '热门', containerId: '102803', since_id: 0},
-                    {title: '新鲜事', containerId: '102803_ctg1_7978_-_ctg1_7978', since_id: 0},
-                    {title: '同城', containerId: '102803', since_id: 0},
-                    {title: '搞笑', containerId: '102803_ctg1_4388_-_ctg1_4388', since_id: 0},
-                    {title: '情感', containerId: '102803_ctg1_1988_-_ctg1_1988', since_id: 0},
-                    {title: '明星', containerId: '102803_ctg1_4288_-_ctg1_4288', since_id: 0},
-                    {title: '动漫', containerId: '102803_ctg1_4188_-_ctg1_4188', since_id: 0},
-                    {title: '数码', containerId: '102803_ctg1_5088_-_ctg1_5088', since_id: 0},
-                    {title: '体育', containerId: '102803_ctg1_1388_-_ctg1_1388', since_id: 0},
-                    {title: '汽车', containerId: '102803_ctg1_5188_-_ctg1_5188', since_id: 0},
-                    {title: '电影', containerId: '102803_ctg1_3288_-_ctg1_3288', since_id: 0},
-                    {title: '游戏', containerId: '102803_ctg1_4888_-_ctg1_4888', since_id: 0},
-                ]
             }
         },
+        computed:{
+            ...mapGetters(['active','listData']),
+            getActive: {
+                get() {
+
+                    return this.active
+                },
+                set(v) {
+                    this.SET_ACTIVE(v);
+                }
+            }
+
+        },
         methods: {
-            ...mapMutations(['SET_LOADING']),
+            ...mapMutations(['SET_LOADING','SET_ACTIVE']),
             ...mapActions(['get_main_data']),
             test(name, title) {
                 console.log(this.listData[name].containerId);
@@ -77,7 +75,7 @@
                 this.SET_LOADING(true)
             },
             test1(v) {
-                this.active = v;
+                this.SET_ACTIVE(v);
                 this.trueValue = v;
                 this.activeNames = [];
                 this.get_main_data({
